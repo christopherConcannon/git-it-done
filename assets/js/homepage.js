@@ -25,78 +25,81 @@ var getUserRepos = function(user) {
 	var apiUrl = `https://api.github.com/users/${user}/repos`;
 
 	// make a request to the url
-// 	fetch(apiUrl).then(function(response) {
-//     if (response.ok) {
-//       response.json().then(function(data) {
-//         displayRepos(data, user);
-//       });
-//     } else {
-//       alert('Error: ' + response.statusText);
-//     }
-// 	});
-// };
-fetch(apiUrl)
-  .then(function(response) {
-    // request was successful
-    if (response.ok) {
-      response.json().then(function(data) {
-        displayRepos(data, user);
-      });
-    } else {
-      alert('Error: ' + response.statusText);
-    }
-  })
-  .catch(function(error) {
-    // Notice thie '.catch()' getting chained onto the end of the '.then()'
-    alert('Unable to connect to GitHub');
-  });
+	// 	fetch(apiUrl).then(function(response) {
+	//     if (response.ok) {
+	//       response.json().then(function(data) {
+	//         displayRepos(data, user);
+	//       });
+	//     } else {
+	//       alert('Error: ' + response.statusText);
+	//     }
+	// 	});
+	// };
+	fetch(apiUrl)
+		.then(function(response) {
+			// request was successful
+			if (response.ok) {
+				response.json().then(function(data) {
+					displayRepos(data, user);
+				});
+			} else {
+				alert('Error: ' + response.statusText);
+			}
+		})
+		.catch(function(error) {
+			// Notice thie '.catch()' getting chained onto the end of the '.then()'
+			alert('Unable to connect to GitHub');
+		});
 
-var displayRepos = function(repos, searchTerm) {
-  // check if api returned any repos (does user have repos?)
-  if (repos.length === 0) {
-    repoContainerEl.textContent = 'No repositories found';
-    return;
-  }
-	// clear old content
-	repoContainerEl.textContent = '';
-	repoSearchTerm.textContent = searchTerm;
+	var displayRepos = function(repos, searchTerm) {
+		// check if api returned any repos (does user have repos?)
+		if (repos.length === 0) {
+			repoContainerEl.textContent = 'No repositories found';
+			return;
+		}
+		// clear old content
+		repoContainerEl.textContent = '';
+		repoSearchTerm.textContent = searchTerm;
 
-	// loop over repos
-	for (var i = 0; i < repos.length; i++) {
-		// format repo name   octocat/boysenberry-repo-1
-		var repoName = repos[i].owner.login + '/' + repos[i].name;
+		// loop over repos
+		for (var i = 0; i < repos.length; i++) {
+			// format repo name   octocat/boysenberry-repo-1
+			var repoName = repos[i].owner.login + '/' + repos[i].name;
 
-		// create a container for each repo
-		var repoEl = document.createElement('div');
-    repoEl.classList = 'list-item flex-row justify-space-between align-center';
-    
-    // create a span element to hold repository name
-    var titleEl = document.createElement('span');
-    titleEl.textContent = repoName;
+			// create a container for each repo
+			var repoEl = document.createElement('div');
+			repoEl.classList = 'list-item flex-row justify-space-between align-center';
 
-    // append title to repo container
-    repoEl.appendChild(titleEl);
+			// create a span element to hold repository name
+			var titleEl = document.createElement('span');
+			titleEl.textContent = repoName;
 
-    // create a status element
-    var statusEl = document.createElement('span');
-    statusEl.classList = 'flex-row align-center';
+			// append title to repo container
+			repoEl.appendChild(titleEl);
 
-    // check if current repo has issues or not
-    if (repos[i].open_issues_count > 0) {
-      //  statusEl.innerHTML =
-      //   "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
-        statusEl.innerHTML =
-        `<i class='fas fa-times status-icon icon-danger'></i>${repos[i].open_issues_count} issue(s)`;
-    } else {
-      statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
-    }
+			// create a status element
+			var statusEl = document.createElement('span');
+			statusEl.classList = 'flex-row align-center';
 
-    // append to container 
-    repoEl.appendChild(statusEl);
+			// check if current repo has issues or not
+			if (repos[i].open_issues_count > 0) {
+				//  statusEl.innerHTML =
+				//   "<i class='fas fa-times status-icon icon-danger'></i>" + repos[i].open_issues_count + " issue(s)";
+				statusEl.innerHTML = `<i class='fas fa-times status-icon icon-danger'></i>${repos[
+					i
+				].open_issues_count} issue(s)`;
+			} else {
+				statusEl.innerHTML =
+					"<i class='fas fa-check-square status-icon icon-success'></i>";
+			}
 
-    // append each repo container to the dom...right hand column
-    repoContainerEl.appendChild(repoEl);
-	}
+			// append to container
+			repoEl.appendChild(statusEl);
+
+			// append each repo container to the dom...right hand column
+			repoContainerEl.appendChild(repoEl);
+		}
+	};
 };
 
 userFormEl.addEventListener('submit', formSubmitHandler);
