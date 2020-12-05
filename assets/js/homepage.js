@@ -49,7 +49,7 @@ var getUserRepos = function(user) {
 			}
 		})
 		.catch(function(error) {
-			// Notice thie '.catch()' getting chained onto the end of the '.then()'
+			// Notice this '.catch()' getting chained onto the end of the '.then()'
 			alert('Unable to connect to GitHub');
 		});
 };
